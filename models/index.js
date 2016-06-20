@@ -24,7 +24,6 @@ var Page = db.define('page', {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW
       },
-
       route: {
           type: Sequelize.VIRTUAL,
           get: function() {

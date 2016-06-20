@@ -21,8 +21,8 @@ var returnRouter = function() {
 
             entry.save()
                 .then(function(savedEntry) {
-                  console.log(Page.route)
-                    // res.redirect("/wiki/" + savedEntry.dataValues.urlTitle)
+                  res.redirect(savedEntry.route) // VIRTUAL
+                    // res.redirect("/wiki/" + savedEntry.dataValues.urlTitle) // FROM DATABASE
                 })
                 .catch(function (error){
                   console.log(error)
