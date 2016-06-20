@@ -23,19 +23,20 @@ var Page = db.define('page', {
       date: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW
-      }
-    }, {
+      },
+
       route: {
           type: Sequelize.VIRTUAL,
           get: function() {
               return "/wiki/" + this.urlTitle;
           }
-      },
+      }},{
       hooks: {
           beforeValidate: function(page, options) {
                   page.urlTitle = utils.generateUrlTitle(page.title);
           }
    }
+
 });
 
 var User = db.define('user', {
