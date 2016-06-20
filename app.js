@@ -4,7 +4,9 @@ var Express = require ("express");
 var morgan = require ("morgan");
 var bodyParser = require ("body-parser");
 var swig = require("swig");
+//Local dependencies
 var routes = require("./routes");
+var models = require("./models")
 // Initialize Express
 var app = new Express();
 
@@ -27,12 +29,16 @@ app.use(logger)
 
 //serves up static files from public folder
 
-
-
+models.User.sync({})
+.then(function(){
+  return models.Page.sync({})
+})
+.then (function(){
 var server = app.listen(3000, function(){
   console.log('listening on port 3000');
 
 });
-
+})
+.catch(console.error)
 app.use('/', routes());
 app.use(Express.static("public"));
