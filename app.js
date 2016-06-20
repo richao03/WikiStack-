@@ -1,12 +1,14 @@
 // Dependencies
 var Sequelize = require("sequelize");
-var Express = require ("express");
-var morgan = require ("morgan");
-var bodyParser = require ("body-parser");
+var Express = require("express");
+var morgan = require("morgan");
+var bodyParser = require("body-parser");
 var swig = require("swig");
 //Local dependencies
-var routes = require("./routes");
+var indexRoutes = require("./routes/index");
 var models = require("./models")
+var wikiRoutes = require("./routes/wiki")
+
 // Initialize Express
 var app = new Express();
 
@@ -20,25 +22,26 @@ swig.setDefaults({ cache: false });
 var logger = morgan("dev")
 app.use(logger)
 
-
-
 //using body parser
-// app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
+app.use(bodyParser.json()); // would be for AJAX requests
 
 
 //serves up static files from public folder
 
 models.User.sync({})
-.then(function(){
-  return models.Page.sync({})
-})
-.then (function(){
-var server = app.listen(3000, function(){
-  console.log('listening on port 3000');
+    .then(function() {
+        return models.Page.sync({})
+    })
+    .then(function() {
+        var server = app.listen(3000, function() {
+            console.log('listening on port 3000');
 
-});
-})
-.catch(console.error)
-app.use('/', routes());
+        });
+    })
+    .catch(console.error)
+
+// Routing
+app.use('/', indexRoutes());
+app.use('/wiki', wikiRoutes());
 app.use(Express.static("public"));
